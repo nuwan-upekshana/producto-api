@@ -23,13 +23,17 @@
   },
   "dependencies": {
     "@azure/functions": "^1.0.3",
+    "@nestcloud/common": "^0.7.17",
     "@nestjs/azure-func-http": "^0.8.0",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/swagger": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
