@@ -12,11 +12,10 @@ export class AppController {
   @Get()
   async getHello(): Promise<APIPayload> {
     const payload = await this.appService.getHello();
-    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    // const apiPayload: APIPayload = {
-    //   message: 'The app has been found.',
-    //   payload,
-    // };
-    // return apiPayload;
+    const apiPayload: APIPayload = {
+      message: 'The app has been found.',
+      payload,
+    };
+    return apiPayload;
   }
 }
