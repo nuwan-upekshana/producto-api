@@ -1,17 +1,21 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/http-exception.filter';
 import { TransformInterceptor } from './common/transform.interceptor';
 
 export async function createApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
+
+  //Get API configs
   const configService = app.get<ConfigService>(ConfigService);
+
+  //Check API production status
   const isProduction =
     configService.get<string>('PRODUCTION') === 'true' ? true : false;
 
+  //Config Swagger
   if (!isProduction) {
     const document = SwaggerModule.createDocument(
       app,
@@ -26,9 +30,11 @@ export async function createApp(): Promise<INestApplication> {
 
     SwaggerModule.setup('docs', app, document);
   }
-  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // Transform respond to the standard format (APIResponse: interface)
   app.useGlobalInterceptors(new TransformInterceptor());
 
+  //Cors
   app.enableCors();
 
   app.use((req, res, next) => {
@@ -38,6 +44,15 @@ export async function createApp(): Promise<INestApplication> {
     next();
   });
 
+  // Enable class validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      //  whitelist: true,
+    }),
+  );
+
+  //Init API
   await app.init();
   return app;
 }

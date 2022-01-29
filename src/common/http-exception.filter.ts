@@ -31,6 +31,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
     response.status(status).json(payload);
   }
 
+  // getMessage(exception: any) {
+  //   console.log(exception);
+  //   if (Array.isArray(exception.message.message)) {
+  //     return exception.message.message;
+  //   } else if (typeof exception.message === 'object') {
+  //     return exception.message.error;
+  //   } else {
+  //     return exception.toString();
+  //   }
+  // }
+
   getMessage(exception) {
     if (exception instanceof HttpException) {
       console.log(exception.message);
