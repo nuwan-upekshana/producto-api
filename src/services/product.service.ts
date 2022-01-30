@@ -12,6 +12,17 @@ export class ProductService {
   constructor(private productRepo: InMemoryDBService<Product>) {}
 
   /**
+   * Get a product using id form the InMemory DB
+   * @param {string} id
+   * @returns {Promise} ProductDTO
+   */
+  async get(id: string): Promise<ProductDTO> {
+    return await lastValueFrom(this.productRepo.getAsync(id)).then((data) =>
+      ProductDTO.fromEntity(data),
+    );
+  }
+
+  /**
    * Create a product in the InMemory DB
    * @param {ProductDTO} dto
    * @returns {Promise} ProductDTO

@@ -22,6 +22,16 @@ import { ProductService } from '../services';
 export class ProductController {
   constructor(private readonly productServ: ProductService) {}
 
+  @Get(':id')
+  async get(@Param('id') id: string) {
+    const payload = await this.productServ.get(id);
+    const apiPayload: APIPayload = {
+      message: 'The Product has been found.',
+      payload,
+    };
+    return apiPayload;
+  }
+
   @Post()
   async create(@Body() port: ProductDTO): Promise<APIPayload> {
     // Pass products to the service
