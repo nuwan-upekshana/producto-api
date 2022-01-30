@@ -36,4 +36,20 @@ export class ProductService {
       ProductDTO.fromEntity(e),
     );
   }
+
+  /**
+   * Update a product in the InMemory DB
+   * @param {string} id
+   * @param {ProductDTO} dto
+   * @returns {Promise} ProductDTO
+   */
+  public async update(id: string, dto: ProductDTO): Promise<ProductDTO> {
+    // Get recode
+    const repoData = this.productRepo.get(id);
+    // Update recode object
+    const updatedRecode = { ...repoData, ...dto.toEntity() };
+    // Submit update
+    this.productRepo.updateAsync(updatedRecode);
+    return ProductDTO.fromEntity(updatedRecode);
+  }
 }

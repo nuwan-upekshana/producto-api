@@ -44,4 +44,19 @@ export class ProductController {
     };
     return apiPayload;
   }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() dto: ProductDTO,
+  ): Promise<APIPayload> {
+    // Pass products to the service
+    const payload = await this.productServ.update(id, dto);
+    //Payload
+    const apiPayload: APIPayload = {
+      message: 'The Product has been successfully updated',
+      payload,
+    };
+    return apiPayload;
+  }
 }
