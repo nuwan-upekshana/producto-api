@@ -133,4 +133,21 @@ export class ProductService {
     this.productRepo.deleteAsync(id);
     return { deleted: true };
   }
+
+  /**
+   * Seed product in the InMemory DB
+   * @returns {Promise} boolean
+   */
+  public async seed(): Promise<{ seed: boolean }> {
+    // Create seed factory
+    const recordFactory = (idx: Number): Partial<Product> => ({
+      id: getUUID(),
+      Model: `Model ${idx}`,
+      Brand: `Brand ${idx}`,
+      Description: `Brand description ${idx}`,
+    });
+
+    this.productRepo.seed(recordFactory, 10);
+    return { seed: true };
+  }
 }
