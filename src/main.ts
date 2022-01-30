@@ -1,17 +1,21 @@
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/http-exception.filter';
 import { TransformInterceptor } from './common/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //Get API configs
   const configService = app.get<ConfigService>(ConfigService);
 
+  //Check API production status
   const isProduction =
     configService.get<string>('PRODUCTION') === 'true' ? true : false;
 
+  //Config Swagger
   if (!isProduction) {
     const document = SwaggerModule.createDocument(
       app,
@@ -27,9 +31,10 @@ async function bootstrap() {
     SwaggerModule.setup('docs', app, document);
   }
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // Transform respond to the standard format (APIResponse: interface)
   app.useGlobalInterceptors(new TransformInterceptor());
 
+  //Cors
   app.enableCors();
 
   app.use((req, res, next) => {
@@ -39,6 +44,14 @@ async function bootstrap() {
     next();
   });
 
+  // Enable class validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
+
+  //Init API
   await app.listen(configService.get<string>('PORT'));
 }
 bootstrap();
