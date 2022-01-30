@@ -9,31 +9,9 @@ import { TransformInterceptor } from './common/transform.interceptor';
 export async function createApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
 
-  //Get API configs
-  const configService = app.get<ConfigService>(ConfigService);
-
-  //Check API production status
-  const isProduction =
-    configService.get<string>('PRODUCTION') === 'true' ? true : false;
-
-  //Config Swagger
-  if (!isProduction) {
-    const document = SwaggerModule.createDocument(
-      app,
-      new DocumentBuilder()
-        .addBearerAuth()
-        .setTitle('productO API')
-        .setDescription('productO is a product details management API')
-        .setVersion('1.0')
-        .build(),
-      { ignoreGlobalPrefix: false },
-    );
-
-    SwaggerModule.setup('docs', app, document);
-  }
-
   // Transform respond to the standard format (APIResponse: interface)
   app.useGlobalInterceptors(new TransformInterceptor());
+  // Transform errors to the standard format (APIResponse: interface)
   app.useGlobalFilters(new HttpExceptionFilter());
 
   //Cors
@@ -52,6 +30,7 @@ export async function createApp(): Promise<INestApplication> {
       transform: true,
     }),
   );
+  app.setGlobalPrefix('api');
 
   //Init API
   await app.init();

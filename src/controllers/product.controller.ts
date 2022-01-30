@@ -7,19 +7,17 @@ import {
   Post,
   Put,
   Query,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../common/jwt.guard';
 import { PaginationQuaryDTO } from '../dto/pagination-quary.dto';
-import { getEndpoint } from '../common/endpoint';
 import { ProductDTO } from '../dto';
 import { APIPayload } from '../interface';
 import { ProductService } from '../services';
 
 @ApiTags('Product')
-@Controller(getEndpoint('product'))
+@Controller('product')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class ProductController {
@@ -46,9 +44,10 @@ export class ProductController {
   }
 
   @Post()
-  async create(@Body() port: ProductDTO): Promise<APIPayload> {
+  async create(@Body() product: ProductDTO): Promise<APIPayload> {
     // Pass product to the service
-    const payload = await this.productServ.create(port);
+    console.log(product);
+    const payload = await this.productServ.create(product);
 
     // Payload
     const apiPayload: APIPayload = {
