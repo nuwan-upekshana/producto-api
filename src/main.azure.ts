@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { TransformInterceptor } from './common/transform.interceptor';
 
-async function bootstrap() {
+export async function createApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
 
   //Get API configs
@@ -34,7 +34,6 @@ async function bootstrap() {
 
   // Transform respond to the standard format (APIResponse: interface)
   app.useGlobalInterceptors(new TransformInterceptor());
-  // Transform errors to the standard format (APIResponse: interface)
   app.useGlobalFilters(new HttpExceptionFilter());
 
   //Cors
@@ -55,6 +54,6 @@ async function bootstrap() {
   );
 
   //Init API
-  await app.listen(configService.get<string>('PORT'));
+  await app.init();
+  return app;
 }
-bootstrap();
