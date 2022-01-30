@@ -1,10 +1,9 @@
 import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
-import { Test, TestingModule } from '@nestjs/testing';
-import { getUUID } from '../src/common/uuid';
-import { ProductController } from '../src/controllers';
-import { ProductDTO } from '../src/dto';
-import { Product } from '../src/entities/product.entity';
-import { ProductService } from '../src/services';
+import { getUUID } from '../common/uuid';
+import { ProductController } from '../controllers';
+import { ProductDTO } from '../dto';
+import { Product } from '../entities/product.entity';
+import { ProductService } from '../services';
 
 describe('ProductController', () => {
   let productController: ProductController;

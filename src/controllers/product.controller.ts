@@ -74,7 +74,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async archive(@Param('id') id: string): Promise<APIPayload> {
+  async delete(@Param('id') id: string): Promise<APIPayload> {
     // Pass product id to the service
     const payload = await this.productServ.delete(id);
     //Payload

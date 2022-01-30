@@ -10,7 +10,7 @@ import { UserUpdateDTO } from '../dto';
 import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
 import { User } from '../entities';
 import { lastValueFrom } from 'rxjs';
-import { getUUID } from 'src/common/uuid';
+import { getUUID } from '../common/uuid';
 
 @Injectable()
 export class UserService {
