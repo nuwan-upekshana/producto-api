@@ -3,16 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Put,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { PaginationQuaryDTO } from 'src/dto/pagination-quary.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../common/jwt.guard';
+import { PaginationQuaryDTO } from '../dto/pagination-quary.dto';
 import { getEndpoint } from '../common/endpoint';
 import { ProductDTO } from '../dto';
 import { APIPayload } from '../interface';
@@ -20,6 +20,8 @@ import { ProductService } from '../services';
 
 @ApiTags('Product')
 @Controller(getEndpoint('product'))
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class ProductController {
   constructor(private readonly productServ: ProductService) {}
 

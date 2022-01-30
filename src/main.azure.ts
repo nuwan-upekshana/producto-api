@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './common/http-exception.filter';
 import { TransformInterceptor } from './common/transform.interceptor';
 
 export async function createApp(): Promise<INestApplication> {
@@ -33,6 +34,7 @@ export async function createApp(): Promise<INestApplication> {
 
   // Transform respond to the standard format (APIResponse: interface)
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   //Cors
   app.enableCors();
@@ -48,7 +50,6 @@ export async function createApp(): Promise<INestApplication> {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      //  whitelist: true,
     }),
   );
 
