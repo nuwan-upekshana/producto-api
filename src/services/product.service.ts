@@ -32,7 +32,8 @@ export class ProductService {
     return new Promise((resolve, reject) => {
       const productList = this.productRepo
         .getAll()
-        .map((pro) => ProductDTO.fromEntity(pro));
+        .map((pro) => ProductDTO.fromEntity(pro))
+        .filter((val) => val.brand);
       const { page, sizePerPage, searchQuary, filterQuary, pagination } =
         pQuery;
       let filteredData = [];

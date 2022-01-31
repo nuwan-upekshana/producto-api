@@ -46,7 +46,6 @@ export class ProductController {
   @Post()
   async create(@Body() product: ProductDTO): Promise<APIPayload> {
     // Pass product to the service
-    console.log(product);
     const payload = await this.productServ.create(product);
 
     // Payload
